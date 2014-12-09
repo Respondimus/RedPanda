@@ -6,6 +6,7 @@ angular.module('responymous')
   })
   .factory('Auth', function(Firebase, $firebaseAuth, $firebase){
     var auth = $firebaseAuth(Firebase);
+    var currentUser = {};
 
     return {
       /**
@@ -16,6 +17,9 @@ angular.module('responymous')
         auth.$onAuth(function(data){
           cb(updateUser(data));
         });
+      },
+      getUser: function(){
+        return currentUser;
       },
       /**
       * Wrapper for `$firebaseAuth.$authWithOAuthPopup()` that invokes the
@@ -58,13 +62,19 @@ angular.module('responymous')
         student: true
       });
 
+      Firebase.child('userClasses')
+        .child( authdUser.github.id )
+        .set('Q42014FEEORL');
+
       user.$save();
+
+      currentUser = user;
 
       return user;
     } // END updateUser
   }) // END factory(Auth)
 
-  .controller('MainCtrl', function(Auth) {
+  .controller('MainCtrl', function(Auth,$location) {
 
     var self = this;
 
@@ -73,6 +83,9 @@ angular.module('responymous')
 
     Auth.onAuth(function(user){
       self.user = user;
+      //$location.path('/student');
     });
+
+    //console.log(Auth.getUser().$id);
   })
 ;

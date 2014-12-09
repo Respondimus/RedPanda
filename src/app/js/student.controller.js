@@ -1,12 +1,9 @@
 'use strict';
 
 angular.module('responymous')
- .controller('StudentCtrl', function(CONFIG, $timeout) {
+ .controller('StudentCtrl', function(Firebase,Auth,$timeout) {
 
-
-
-  var ref = new Firebase(CONFIG.Firebase.baseUrl);
-  var self = this;
+  console.log(Auth);
 
   this.isDisabled = false;
 
